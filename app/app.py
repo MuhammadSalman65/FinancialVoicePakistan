@@ -1,32 +1,31 @@
 import streamlit as st
 
-# Step 1: Agar user ne abhi tak passcode set nahi kiya (Pehli dafa aaya hai)
+st.set_page_config(page_title="Financial Voice Pakistan", layout="wide")
+
+# 1. Passcode Check & Setup Block
 if "user_passcode" not in st.session_state:
-    st.title("🔒 Welcome to Financial Voice Pakistan")
-    st.subheader("Set Your Personal Passcode")
-    st.info("Apni marzi ka 4-digit ya koi bhi Passcode set karein taake aap ki session security active ho jaye.")
+    st.title("🔒 Financial Voice Pakistan")
+    st.subheader("Set Your Session Passcode")
+    st.info("💡 Portfolio Security Demo: Set any passcode below to unlock the dashboard.")
     
     new_pin = st.text_input("Create Your Passcode:", type="password", key="setup_pin")
-    
-    if st.button("Set Passcode & Enter", use_container_width=True):
+    if st.button("Unlock Dashboard", use_container_width=True):
         if new_pin.strip():
             st.session_state["user_passcode"] = new_pin
             st.session_state["authenticated"] = True
-            st.success("Passcode Set Successfully!")
             st.rerun()
         else:
             st.warning("Please enter a valid passcode!")
-    st.stop()
+    st.stop()  # Is point par script ruk jaye gi jab tak passcode enter na ho
 
-# Step 2: Agar user logout ho jaye toh wahi passcode maange
-if not st.session_state.get("authenticated", False):
-    st.title("🔑 Passcode Verification")
-    entered_pin = st.text_input("Enter Your Passcode:", type="password", key="login_pin")
-    
-    if st.button("Unlock Application", use_container_width=True):
-        if entered_pin == st.session_state["user_passcode"]:
-            st.session_state["authenticated"] = True
-            st.rerun()
-        else:
-            st.error("Incorrect passcode! Please try again.")
-    st.stop()
+# 2. Main Application Content (Passcode enter hone ke baad yeh chalega)
+st.sidebar.success("🔑 Authenticated Session")
+st.title("📊 Financial Voice Pakistan - Central Dashboard")
+st.success("🎉 Access Granted! Welcome to the suite.")
+st.info("👈 Please select a module from the sidebar on the left to explore.")
+
+# Redirection to main home page if using multi-page structure
+try:
+    st.switch_page("pages/01_Home_Dashboard.py")
+except Exception:
+    pass
